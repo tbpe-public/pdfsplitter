@@ -25,24 +25,76 @@ namespace PdfSplitCsharp
 
         static void Main(string[] args)
         {
-            
+
+            // let's get a DLL that we want to deploy
+            GhostscriptVersionInfo gvi = new GhostscriptVersionInfo(AppDomain.CurrentDomain.BaseDirectory + @"\gsdll64.dll");
+
+            // this is what will read the PDF file and turn it into an image
             GhostscriptRasterizer r = new GhostscriptRasterizer();
 
-            String inputFile = "c:\\users\\masons\\projects\\pdfsplitcsharp\\test.pdf";
-            String outputDir = "c:\\users\\masons\\projects\\pdfsplitcsharp\\";
+            String inputFile = @"";
+            String outputDir = @"";
+            String singleFileName = @"";
 
-            r.Open(inputFile);
+            String workingDirectory = Directory.GetCurrentDirectory();
+
+            string[] files = Directory.GetFiles(workingDirectory, "*.pdf");
+
+            foreach (string filename in files)
+            {
+                singleFileName = Path.GetFileNameWithoutExtension(filename);
+                DialogResult dialogresult = MessageBox.Show("Found a file to process: " + singleFileName + ".pdf" + "\nContinue?", "Program Step 1", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (dialogresult == DialogResult.Cancel)
+                {
+                    return;
+                }
+                else
+                {
+                    inputFile = filename;
+                    break;
+                }
+            }
+
+
+            if (args.Length > 0)
+            {
+                inputFile = args[0];
+            }
+
+            if (inputFile.Length < 5)
+            {
+                Console.WriteLine("Please provide a PDF file to process.");
+                return;
+            }
+
+            try
+            {
+                r.Open(inputFile, gvi, false); // use the DLL we referenced at the start of this program
+            }
+            catch (Exception x)
+            {
+
+                Console.WriteLine("Could not start up Ghostscript Rasterizer: " + x.ToString());
+                return;
+            }
+
             
             Bitmap image;
             String json = "";
 
             int fc = 0;
-            String doctype = "transcript";
+            int pagecount = 0;
+            int totalpagecount = 0;
+            int dividerpagecount = 0;
+            int pdfpagecount = r.PageCount;
+            String doctype = "misc";
 
             // store output document names, and the pages of which these are to be comprised
             IDictionary<int, String> docNames = new Dictionary<int, String>();
             IDictionary<int, int> startPage = new Dictionary<int, int>();            
             IDictionary<int, int> endPage = new Dictionary<int, int>();
+            IDictionary<int, int> countPages = new Dictionary<int, int>();
 
             QrResult qrs;
 
@@ -56,6 +108,7 @@ namespace PdfSplitCsharp
                 // this object may already be set from previous, so clear it
                 qrs = null;
 
+                // if we get some JSON, deserialize it
                 if (json.Length > 0)
                 {
 
@@ -78,7 +131,9 @@ namespace PdfSplitCsharp
                     doctype = qrs.documenttype; // we'll set this based on the JSON valye of the "document-type" key
 
                     // create new file
-                    docNames[fc] = doctype + "_" + fc.ToString() + ".pdf";
+                    docNames[fc] = doctype + "_" + fc.ToString();
+                    pagecount = 0; // reset our per-file page counter
+                    dividerpagecount++; // keep track of how many separator pages we've got
 
                 }
                 else
@@ -94,6 +149,12 @@ namespace PdfSplitCsharp
                     {
                         startPage[fc] = i;
                     }
+
+                    
+                    totalpagecount++; // increment our total number of content pages
+
+                    pagecount++;
+                    countPages[fc] = pagecount; // store our per-file page counter
                     
                 }
 
@@ -108,8 +169,10 @@ namespace PdfSplitCsharp
             // loop over all the files we need to create, building a PDF for each
             for (int i = 1; i <= fc; i++)
             {
-                pdfBuilt = BuildPdf(startPage[i], endPage[i], inputFile, outputDir + docNames[i]);
+                pdfBuilt = BuildPdf(startPage[i], endPage[i], inputFile, outputDir + singleFileName + "_" + docNames[i] + "_" + countPages[i].ToString() + ".pdf");
             }
+
+            MessageBox.Show("Total pages overall: " + pdfpagecount.ToString() + "\n" + "Total individual documents: " + dividerpagecount.ToString() + "\n" + "Total content pages: " + totalpagecount.ToString(), "All Done");
 
             
 
