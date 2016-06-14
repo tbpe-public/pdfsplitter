@@ -6,3 +6,6 @@ This is meant for Windows 10. There are no un-included dependencies. Build this 
 
 # Running it
 Call the executable from a batch file in the directory where you have a PDF file you'd like to split.
+
+# Errata
+I threw this together in a couple of days so it's pretty hodgepodge. But it works and is good for demo purposes and as a proof of concept and can be incorporated into other applications.
