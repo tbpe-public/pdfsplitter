@@ -12,3 +12,7 @@ c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\bin\Debug\zxing.presentat
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\Debug\PdfSplitCsharp.csprojResolveAssemblyReference.cache
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\Debug\PdfSplitCsharp.exe
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\Debug\PdfSplitCsharp.pdb
+c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\bin\Debug\Newtonsoft.Json.dll
+c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\bin\Debug\Newtonsoft.Json.xml
+c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\bin\Debug\itextsharp.dll
+c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\bin\Debug\itextsharp.xml
