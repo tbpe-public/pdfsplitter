@@ -1,3 +1,4 @@
 *.exe
 *.pdf
 PdfSplitCsharp/bin/*
+PdfSplitCsharp/publish/*
