@@ -2,3 +2,4 @@
 *.pdf
 PdfSplitCsharp/bin/*
 PdfSplitCsharp/publish/*
+*.pfx
