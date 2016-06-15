@@ -102,6 +102,8 @@ namespace PdfSplitCsharp
             for (int i = 1; i <= r.PageCount; i++)
             {
 
+                Console.WriteLine("* processing source PDF page: " + i.ToString());
+
                 image = (Bitmap)r.GetPage(72, 72, i);
                 json = Program.GetQr(image);
 
@@ -127,18 +129,27 @@ namespace PdfSplitCsharp
                 if (qrs != null && qrs.documenttype.Length > 0)
                 {
 
+                    // if the previously processed document was only 1 page, set the end page
+                    if (!endPage.ContainsKey(fc) && i > 1)
+                    {
+                        endPage[fc] = i - 1;
+                    }
+
                     fc++; // new document!
                     doctype = qrs.documenttype; // we'll set this based on the JSON valye of the "document-type" key
+
 
                     // create new file
                     docNames[fc] = doctype + "_" + fc.ToString();
                     pagecount = 0; // reset our per-file page counter
                     dividerpagecount++; // keep track of how many separator pages we've got
-
+                    Console.WriteLine(" - found " + doctype);
+                    
                 }
                 else
                 {
                     // we didn't find a QR code with "document-type" as a key on this page
+                    Console.WriteLine(" - adding page to document");
 
                     // if we already have a starting page for this document, then let's update the last page (it'll keep going up until we find a new document)
                     if (startPage.ContainsKey(fc))
@@ -159,7 +170,7 @@ namespace PdfSplitCsharp
                 }
 
             }
-            
+
             // empty our Rasterizer objects
             r.Close();
             r.Dispose();

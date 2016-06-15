@@ -23,3 +23,4 @@ c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\x64\Debug\pdfsplit.ex
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\x64\Debug\pdfsplit.application
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\x64\Debug\pdfsplit.exe
 c:\users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\x64\Debug\pdfsplit.pdb
+C:\Users\masons\projects\PdfSplitCsharp\PdfSplitCsharp\obj\x64\Debug\PdfSplitCsharp.csprojResolveAssemblyReference.cache
