@@ -129,14 +129,8 @@ namespace PdfSplitCsharp
                 if (qrs != null && qrs.documenttype.Length > 0)
                 {
 
-                    // if the previously processed document was only 1 page, set the end page
-                    if (!endPage.ContainsKey(fc) && i > 1)
-                    {
-                        endPage[fc] = i - 1;
-                    }
-
                     fc++; // new document!
-                    doctype = qrs.documenttype; // we'll set this based on the JSON valye of the "document-type" key
+                    doctype = qrs.documenttype; // we'll set this based on the JSON value of the "document-type" key
 
 
                     // create new file
@@ -159,6 +153,7 @@ namespace PdfSplitCsharp
                     else // if we don't have a starting page for this document, set it
                     {
                         startPage[fc] = i;
+                        endPage[fc] = i; // and seed the end page
                     }
 
                     
